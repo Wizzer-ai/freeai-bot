@@ -1207,8 +1207,9 @@ async def cb_admin_restart(callback: CallbackQuery):
 # ЗАПУСК
 # =============================================================
 
-async def main():
+async def main(bot_instance: Bot):
     global bot
+    bot = bot_instance
     
     dp.include_router(router)
 
@@ -1275,7 +1276,7 @@ if __name__ == "__main__":
 
     async def run_all():
         await asyncio.gather(
-            main(),
+            main(bot),
             health_check_server()
         )
 
