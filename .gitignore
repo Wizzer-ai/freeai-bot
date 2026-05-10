@@ -1,21 +1,6 @@
-# Python
+aggregator_settings.json
+temp_*
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Виртуальное окружение
-venv/
-env/
-ENV/
-
-# Telegram bot
+*.pyc
 .env
-
-# Логи
 *.log
-
-# Системные
-.DS_Store
-Thumbs.db
