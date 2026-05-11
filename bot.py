@@ -36,7 +36,7 @@ from aiogram import Bot, Dispatcher, Router, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import (
     Message, CallbackQuery, InlineKeyboardMarkup,
-    InlineKeyboardButton
+    InlineKeyboardButton, PreCheckoutQuery, LabeledPrice
 )
 from aiogram.exceptions import TelegramBadRequest
 
@@ -65,13 +65,15 @@ TRANSLATIONS = {
         "model_select": "Выбери модель:",
         "help_text": "Команды:\n/start — Меню\n/help — Помощь\n/clear — Очистить\n/model — Модель\n/settings — Настройки",
         "payment_title": "💰 Пополнение баланса",
-        "payment_crypto": "CryptoBot ($2/неделя)",
-        "payment_card": "Карта Узбекистан (20 000 сум/неделя)",
+        "payment_crypto": "CryptoBot - $2/неделя",
+        "payment_card": "Карта Узбекистан - 20 000 сум/неделя",
+        "payment_stars": "⭐ Telegram Stars - 100 зв./неделя",
         "payment_success": "✅ Оплата подтверждена!",
         "payment_wait": "⏳ Ожидаю оплату...",
         "trial": "Пробный период",
         "active": "Активен до: {date}",
         "expired": "❌ Подписка истекла",
+        "main_features": "• AI-чат • Фото • Файлы • Поиск • Факты",
     },
     "uz": {
         "welcome": "Salom, {name}!\nMen — AI-yordamchi.\nTilni tanlang:",
@@ -88,13 +90,15 @@ TRANSLATIONS = {
         "model_select": "Modelni tanlang:",
         "help_text": "Buyruqlar:\n/start — Menu\n/help — Yordam\n/clear — Tozalash\n/model — Model\n/settings — Sozlamalar",
         "payment_title": "💰 Balansni to'ldirish",
-        "payment_crypto": "CryptoBot ($2/hafta)",
-        "payment_card": "O'zbek karta (20 000 so'm/hafta)",
+        "payment_crypto": "CryptoBot - $2/hafta",
+        "payment_card": "O'zbek karta - 20 000 so'm/hafta",
+        "payment_stars": "⭐ Telegram Stars - 100 ta/hafta",
         "payment_success": "✅ To'lov tasdiqlandi!",
         "payment_wait": "⏳ To'lov kutish...",
         "trial": "Sinov muddati",
         "active": "Faol to: {date}",
         "expired": "❌ Obunka tugagan",
+        "main_features": "• AI-chat • Foto • Fayllar • Qidiruv • Faktlar",
     },
     "en": {
         "welcome": "Hello, {name}!\nI'm an AI assistant.\nChoose language:",
@@ -111,13 +115,15 @@ TRANSLATIONS = {
         "model_select": "Select model:",
         "help_text": "Commands:\n/start — Menu\n/help — Help\n/clear — Clear\n/model — Model\n/settings — Settings",
         "payment_title": "💰 Balance top-up",
-        "payment_crypto": "CryptoBot ($2/week)",
-        "payment_card": "Uzbek Card (20,000 sum/week)",
+        "payment_crypto": "CryptoBot - $2/week",
+        "payment_card": "Uzbek Card - 20,000 sum/week",
+        "payment_stars": "⭐ Telegram Stars - 100 stars/week",
         "payment_success": "✅ Payment confirmed!",
         "payment_wait": "⏳ Waiting for payment...",
         "trial": "Trial period",
         "active": "Active until: {date}",
         "expired": "❌ Subscription expired",
+        "main_features": "• AI-chat • Photos • Files • Search • Facts",
     }
 }
 
@@ -675,7 +681,8 @@ def get_language_keyboard():
 
 def get_payment_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="₿ CryptoBot ($2/неделя)", callback_data="pay_crypto")],
+        [InlineKeyboardButton(text="⭐ Telegram Stars (100 зв.)", callback_data="pay_stars")],
+        [InlineKeyboardButton(text="₿ CryptoBot ($2)", callback_data="pay_crypto")],
         [InlineKeyboardButton(text="💳 Карта Узбекистан (20 000 сум)", callback_data="pay_card")],
         [InlineKeyboardButton(text="🔙 Назад", callback_data="action_settings")],
     ])
@@ -781,10 +788,20 @@ async def show_main_menu(message: Message):
     model_info = FREE_MODELS.get(model_key, FREE_MODELS[DEFAULT_MODEL])
 
     welcome = (
-        f"━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"🤗 *{labels.get('welcome', 'Привет').format(name=message.from_user.full_name)}*\n"
-        f"━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-        f"*{model_info['name']}*\n{model_info['description']}"
+        "━━━━━━━━━━━━━━━━━━━━━━━\n"
+        f"🤗 *Привет, {message.from_user.first_name}!* 🇷🇺\n"
+        "━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+        "Я — *AI-ассистент* ✨\n\n"
+        "┌─────────────────────┐\n"
+        "│ 🤖  AI-чат          │\n"
+        "│ 🖼  Распознавание   │\n"
+        "│ 📄  Чтение файлов   │\n"
+        "│ 🔍  Веб-поиск       │\n"
+        "│ ✅  Проверка фактов │\n"
+        "└─────────────────────┘\n\n"
+        f"🧠 *Модель:* {model_info['name']}\n"
+        f"📝 {model_info['description']}\n\n"
+        "Напиши что угодно или отправь фото!"
     )
     await message.answer(welcome, reply_markup=get_main_keyboard(user_id))
     stats["total_users"].add(message.from_user.id)
@@ -1203,6 +1220,40 @@ async def cb_pay_card(callback: CallbackQuery):
         "После оплаты нажми 'Проверить'"
     )
     await callback.answer()
+
+
+@router.callback_query(F.data == "pay_stars")
+async def cb_pay_stars(callback: CallbackQuery):
+    await callback.message.edit_text("⏳ Отправляю счёт...")
+
+    try:
+        await bot.send_invoice(
+            chat_id=callback.from_user.id,
+            title="Подписка AI Bot Premium",
+            description="100 звёзд в неделю",
+            payload="stars_subscription",
+            provider_token="",
+            currency="XTR",
+            prices=[LabeledPrice(label="100 звёзд", amount=100)]
+        )
+    except Exception as e:
+        logger.error(f"Stars invoice error: {e}")
+        await callback.message.edit_text(
+            "⚠️ Ошибка отправки счёта.\n"
+            "Попробуй позже или выбери другой способ оплаты."
+        )
+    await callback.answer()
+
+
+@router.pre_checkout_query()
+async def process_pre_checkout(pre_checkout: PreCheckoutQuery):
+    await bot.answer_pre_checkout_query(pre_checkout.id, ok=True)
+
+
+@router.message(F.successful_payment)
+async def process_successful_payment(message: Message):
+    await message.answer("✅ Спасибо! Оплата получена!\n\nПодписка активирована на неделю!")
+    logger.info(f"Payment from {message.from_user.id}: {message.successful_payment}")
 
 
 @router.callback_query(F.data == "action_stats")
