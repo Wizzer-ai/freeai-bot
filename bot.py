@@ -711,7 +711,8 @@ def get_main_keyboard(user_id: int):
 def get_quick_reply_keyboard(user_id: int):
     """Маленькое меню после каждого ответа"""
     model_key = get_user_model(user_id)
-    model_name = FREE_MODELS.get(model_key, {}).get("name", "❓").split()[1] if " " in FREE_MODELS.get(model_key, {}).get("name", "❓") else FREE_MODELS.get(model_key, {}).get("name", "❓")
+    model_info = FREE_MODELS.get(model_key, FREE_MODELS[DEFAULT_MODEL])
+    model_name = model_info["name"].split(" ", 1)[1] if " " in model_info["name"] else model_info["name"]
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=f"🔄 {model_name}", callback_data="action_select_model"),
          InlineKeyboardButton(text="🗑️ Новая тема", callback_data="action_new_topic")],
@@ -951,6 +952,13 @@ async def handle_search(message: Message, query: str):
 @router.message(F.photo)
 async def handle_photo(message: Message):
     user_id = message.from_user.id
+    model_key = get_user_model(user_id)
+    model_info = FREE_MODELS.get(model_key, FREE_MODELS[DEFAULT_MODEL])
+    
+    if not model_info.get("supports_vision"):
+        await message.answer(f"❌ Модель {model_info['name']} не поддерживает картинки. Выбери другую модель с поддержкой vision (/model)")
+        return
+    
     await bot.send_chat_action(message.chat.id, "typing")
 
     try:
