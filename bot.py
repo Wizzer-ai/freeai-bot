@@ -20,6 +20,7 @@ import sys
 import tempfile
 import json
 import time
+import ctypes
 from datetime import datetime, timezone
 from collections import defaultdict
 from typing import Optional
@@ -1510,6 +1511,9 @@ async def keep_alive_pinger():
 
 
 if __name__ == "__main__":
+    if "--hidden" in sys.argv:
+        ctypes.windll.kernel32.FreeConsole()
+    
     print("=" * 50)
     print("🤖 Telegram AI-бот v3 (исправленная)")
     print("=" * 50)
