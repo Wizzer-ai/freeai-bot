@@ -896,7 +896,7 @@ async def cmd_stats(message: Message):
 @router.message(F.text)
 async def handle_text(message: Message):
     user_id = message.from_user.id
-    text = message.text.strip()
+    text = (message.text or "").strip()
 
     if text.lower().startswith(("найди ", "поиск ", "ищи ", "search ", "/search ")):
         query = text.split(" ", 1)[1] if " " in text else text
