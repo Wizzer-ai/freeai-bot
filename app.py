@@ -17,9 +17,6 @@ WEBHOOK_PATH = "/webhook"
 BASE_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://freeai-bot.onrender.com")
 WEBHOOK_URL = BASE_URL + WEBHOOK_PATH
 
-# Единый event loop для всего приложения
-loop = asyncio.new_event_loop()
-
 @app.route("/")
 def root():
     return "FreeAI Bot is running", 200
@@ -32,11 +29,12 @@ def health():
 def webhook():
     try:
         update = Update.model_validate(request.json, context={"bot": bot})
-        loop.run_until_complete(dp.feed_update(bot, update))
+        asyncio.run(dp.feed_update(bot, update))
         return "OK", 200
     except Exception as e:
         logger.error(f"Webhook error: {e}")
-        return f"ERROR: {e}", 500
+        import traceback
+        return f"ERROR: {traceback.format_exc()}", 500
 
 @app.route("/debug")
 def debug():
@@ -50,13 +48,15 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
 
     # Настройка вебхука при старте
-    dp.include_router(router)
-    wh = loop.run_until_complete(bot.get_webhook_info())
-    if wh.url != WEBHOOK_URL:
-        loop.run_until_complete(bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True))
-        logger.info(f"Webhook set: {WEBHOOK_URL}")
-    else:
-        logger.info(f"Webhook OK: {WEBHOOK_URL}")
+    async def setup():
+        dp.include_router(router)
+        wh = await bot.get_webhook_info()
+        if wh.url != WEBHOOK_URL:
+            await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+            logger.info(f"Webhook set: {WEBHOOK_URL}")
+        else:
+            logger.info(f"Webhook OK: {WEBHOOK_URL}")
 
+    asyncio.run(setup())
     logger.info("Starting Flask...")
     app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
