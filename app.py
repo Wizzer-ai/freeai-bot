@@ -11,6 +11,7 @@ import traceback
 from flask import Flask
 
 from freeai_bot import bot, dp, router, main as bot_main, TOKEN, logger
+import freeai_bot
 
 # ---------- Буфер логов (последние 200 строк) ----------
 log_buffer = []
@@ -36,6 +37,15 @@ def run_http():
     @app.route("/logs")
     def logs():
         return "<pre>" + "".join(log_buffer[-100:]) + "</pre>", 200
+
+    @app.route("/debug")
+    def debug():
+        import os as _os
+        info = f"TOKEN set: {bool(TOKEN)}\n"
+        info += f"ADMIN_ID: {_os.environ.get('ADMIN_ID', 'NOT SET')}\n"
+        info += f"user_statuses: {len(freeai_bot.user_statuses)}\n"
+        info += f"user_languages: {len(freeai_bot.user_languages)}\n"
+        return f"<pre>{info}</pre>", 200
 
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)
