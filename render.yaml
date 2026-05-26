@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: freeai-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    autoDeploy: true
+    envVars:
+      - key: DOTS_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: ADMIN_ID
+        sync: false
+      - key: CRYPTOBOT_TOKEN
+        sync: false

@@ -16,15 +16,10 @@ from freeai_bot import bot, dp, router, main as bot_main, TOKEN, logger
 log_buffer = []
 import io
 
-class LogBuffer(io.StringIO):
-    def write(self, s):
-        log_buffer.append(s)
-        if len(log_buffer) > 200:
-            log_buffer[:50] = []
-        super().write(s)
-
-sys.stderr = LogBuffer()
-sys.stdout = LogBuffer()
+def log_write(s):
+    log_buffer.append(s)
+    if len(log_buffer) > 200:
+        log_buffer[:50] = []
 
 # ---------- Flask (для Render — занимает порт) ----------
 def run_http():
@@ -53,8 +48,9 @@ if __name__ == "__main__":
         asyncio.run(bot_main())
     except Exception as e:
         tb = traceback.format_exc()
-        print(f"BOT CRASHED: {e}\n{tb}", flush=True)
-        # Держим процесс живым, чтобы Flask продолжал отвечать
+        msg = f"BOT CRASHED: {e}\n{tb}"
+        log_write(msg)
+        print(msg, flush=True)
         import time
         while True:
             time.sleep(10)
