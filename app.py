@@ -17,6 +17,13 @@ WEBHOOK_PATH = "/webhook"
 BASE_URL = os.environ.get("RENDER_EXTERNAL_URL", "https://freeai-bot.onrender.com")
 WEBHOOK_URL = BASE_URL + WEBHOOK_PATH
 
+# Simple log buffer
+log_buffer = []
+def log_write(s):
+    log_buffer.append(s)
+    if len(log_buffer) > 200:
+        del log_buffer[:50]
+
 @app.route("/")
 def root():
     return "FreeAI Bot is running", 200
@@ -25,32 +32,38 @@ def root():
 def health():
     return "OK", 200
 
+@app.route("/logs")
+def logs():
+    return "<pre>" + "".join(log_buffer[-100:]) + "</pre>", 200
+
 @app.route(WEBHOOK_PATH, methods=["POST"])
 def webhook():
     import traceback as _tb
     try:
-        update = Update.model_validate(request.json, context={"bot": bot})
-        logger.info(f"Got update: {update.update_id}")
+        data = request.json
+        update = Update(**data)
+        log_write(f"Got update: {update.update_id}")
+        if update.message:
+            log_write(f"Message: {update.message.text[:50] if update.message.text else 'None'} from {update.message.from_user.id}")
+        # Check state before
+        from freeai_bot import user_statuses as us, user_languages as ul
+        before_statuses = len(us)
+        before_languages = len(ul)
+        log_write(f"Before: statuses={before_statuses}, languages={before_languages}")
         asyncio.run(dp.feed_webhook_update(bot, update))
-        logger.info(f"Processed update: {update.update_id}")
+        # Check state after
+        after_statuses = len(us)
+        after_languages = len(ul)
+        log_write(f"After: statuses={after_statuses}, languages={after_languages}")
         return "OK", 200
     except Exception as e:
         tb = _tb.format_exc()
-        logger.error(f"Webhook error: {e}\n{tb}")
+        log_write(f"Webhook error: {e}\n{tb}")
         return f"ERROR: {tb}", 500
-
-@app.route("/debug")
-def debug():
-    info = f"TOKEN set: {bool(TOKEN)}\n"
-    info += f"ADMIN_ID: {ADMIN_ID}\n"
-    info += f"user_statuses: {len(freeai_bot.user_statuses)}\n"
-    info += f"user_languages: {dict(freeai_bot.user_languages)}\n"
-    return f"<pre>{info}</pre>", 200
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
 
-    # Настройка вебхука при старте
     async def setup():
         dp.include_router(router)
         wh = await bot.get_webhook_info()
