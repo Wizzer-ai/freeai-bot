@@ -41,11 +41,20 @@ def run_http():
     @app.route("/debug")
     def debug():
         import os as _os
+        import json as _json
         info = f"TOKEN set: {bool(TOKEN)}\n"
         info += f"ADMIN_ID: {_os.environ.get('ADMIN_ID', 'NOT SET')}\n"
         info += f"user_statuses: {len(freeai_bot.user_statuses)}\n"
-        info += f"user_languages: {len(freeai_bot.user_languages)}\n"
+        info += f"user_languages: {dict(freeai_bot.user_languages)}\n"
         info += f"data file exists: {_os.path.exists(freeai_bot.DATA_FILE)}\n"
+        # Test Telegram API
+        try:
+            import urllib.request as _ur
+            tg = f"https://api.telegram.org/bot{TOKEN}/getMe"
+            resp = _json.loads(_ur.urlopen(tg, timeout=5).read())
+            info += f"tg_getMe: {resp.get('result', {}).get('username', 'FAIL')}\n"
+        except Exception as e:
+            info += f"tg_error: {e}\n"
         return f"<pre>{info}</pre>", 200
 
     port = int(os.environ.get("PORT", "5000"))
