@@ -27,14 +27,17 @@ def health():
 
 @app.route(WEBHOOK_PATH, methods=["POST"])
 def webhook():
+    import traceback as _tb
     try:
         update = Update.model_validate(request.json, context={"bot": bot})
-        asyncio.run(dp.feed_update(bot, update))
+        logger.info(f"Got update: {update.update_id}")
+        asyncio.run(dp.feed_webhook_update(bot, update))
+        logger.info(f"Processed update: {update.update_id}")
         return "OK", 200
     except Exception as e:
-        logger.error(f"Webhook error: {e}")
-        import traceback
-        return f"ERROR: {traceback.format_exc()}", 500
+        tb = _tb.format_exc()
+        logger.error(f"Webhook error: {e}\n{tb}")
+        return f"ERROR: {tb}", 500
 
 @app.route("/debug")
 def debug():
