@@ -45,8 +45,6 @@ def run_http():
         info += f"ADMIN_ID: {_os.environ.get('ADMIN_ID', 'NOT SET')}\n"
         info += f"user_statuses: {len(freeai_bot.user_statuses)}\n"
         info += f"user_languages: {len(freeai_bot.user_languages)}\n"
-        info += f"pending_admin_action: {dict(freeai_bot.pending_admin_action)}\n"
-        info += f"router handlers: {len(freeai_bot.router.message_handlers)} msg, {len(freeai_bot.router.callback_query_handlers)} cb\n"
         info += f"data file exists: {_os.path.exists(freeai_bot.DATA_FILE)}\n"
         return f"<pre>{info}</pre>", 200
 
