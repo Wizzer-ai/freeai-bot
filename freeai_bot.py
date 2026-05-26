@@ -367,13 +367,13 @@ router = Router()
 
 # ---------- Глобальный перехват ошибок ----------
 import traceback as _tb
-@dp.errors.register()
-async def on_error(event, error):
-    uid = getattr(event, "from_user", None)
+@dp.error()
+async def on_error(event):
+    exc = getattr(event, "exception", event)
+    uid = getattr(getattr(event, "update", None), "from_user", None)
     uid = uid.id if uid else "?"
-    logger.error(f"Handler error for user {uid}: {error}\n{_tb.format_exc()}")
-    # Также пишем в stderr (должно быть видно в Render)
-    print(f"HANDLER ERROR [{uid}]: {error}", flush=True)
+    logger.error(f"Handler error for user {uid}: {exc}\n{_tb.format_exc()}")
+    print(f"HANDLER ERROR [{uid}]: {exc}", flush=True)
     _tb.print_exc()
 
 # =============================================================
