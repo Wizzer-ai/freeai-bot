@@ -1047,10 +1047,15 @@ async def main():
     ])
 
     await bot.delete_webhook(drop_pending_updates=True)
+    # Отправляем тестовое сообщение админу
+    try:
+        await bot.send_message(ADMIN_ID, "🤖 Бот запущен на Render!")
+    except Exception as e:
+        print(f"FAILED to send startup message: {e}", flush=True)
     logger.info("=" * 50)
     logger.info(" FreeAI Bot запущен!")
     logger.info("=" * 50)
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, skip_updates=False)
 
 if __name__ == "__main__":
     try:
