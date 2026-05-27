@@ -365,17 +365,6 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 router = Router()
 
-# ---------- Глобальный перехват ошибок ----------
-import traceback as _tb
-@dp.error()
-async def on_error(event):
-    exc = getattr(event, "exception", event)
-    uid = getattr(getattr(event, "update", None), "from_user", None)
-    uid = uid.id if uid else "?"
-    logger.error(f"Handler error for user {uid}: {exc}\n{_tb.format_exc()}")
-    print(f"HANDLER ERROR [{uid}]: {exc}", flush=True)
-    _tb.print_exc()
-
 # =============================================================
 # ГЕНЕРАТОР КОМБИНАЦИЙ ТОЧЕК
 # =============================================================
