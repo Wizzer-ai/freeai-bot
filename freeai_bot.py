@@ -397,9 +397,9 @@ def generate_dot_combinations(email: str) -> list[str]:
 
 def get_language_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🇷🇺 Русский", callback_data="lang_ru")],
-        [InlineKeyboardButton(text="🇺🇿 O'zbek", callback_data="lang_uz")],
-        [InlineKeyboardButton(text="🇬🇧 English", callback_data="lang_en")],
+        [InlineKeyboardButton(text="🇷🇺 Русский", callback_data="lang_ru", style="primary")],
+        [InlineKeyboardButton(text="🇺🇿 O'zbek", callback_data="lang_uz", style="primary")],
+        [InlineKeyboardButton(text="🇬🇧 English", callback_data="lang_en", style="primary")],
     ])
 
 def get_main_keyboard(user_id: int):
@@ -408,32 +408,32 @@ def get_main_keyboard(user_id: int):
 
     if check_access(user_id):
         rows = [
-            [InlineKeyboardButton(text=labels.get("menu_how", "ℹ️ How it works"), callback_data="action_how"),
-             InlineKeyboardButton(text=labels.get("menu_services", "🔗 Services"), callback_data="action_services")],
-            [InlineKeyboardButton(text=labels.get("menu_ref", "👥 Рефералы"), callback_data="action_ref"),
-             InlineKeyboardButton(text=labels.get("menu_profile", "👤 Профиль"), callback_data="action_profile")],
-            [InlineKeyboardButton(text=labels.get("menu_dots", "📧 Generate email"), callback_data="action_dots")],
+            [InlineKeyboardButton(text=labels.get("menu_how", "ℹ️ How it works"), callback_data="action_how", style="primary"),
+             InlineKeyboardButton(text=labels.get("menu_services", "🔗 Services"), callback_data="action_services", style="primary")],
+            [InlineKeyboardButton(text=labels.get("menu_ref", "👥 Рефералы"), callback_data="action_ref", style="primary"),
+             InlineKeyboardButton(text=labels.get("menu_profile", "👤 Профиль"), callback_data="action_profile", style="primary")],
+            [InlineKeyboardButton(text=labels.get("menu_dots", "📧 Generate email"), callback_data="action_dots", style="primary")],
         ]
         if user_id == ADMIN_ID:
-            rows.append([InlineKeyboardButton(text=labels.get("admin_btn_users", "👥 Users"), callback_data="action_admin_users")])
+            rows.append([InlineKeyboardButton(text=labels.get("admin_btn_users", "👥 Users"), callback_data="action_admin_users")], style="primary")
         rows.append([
-            InlineKeyboardButton(text=labels.get("menu_language", "🌐 Language"), callback_data="action_language"),
-            InlineKeyboardButton(text=labels.get("menu_help", "ℹ️ Help"), callback_data="action_help"),
+            InlineKeyboardButton(text=labels.get("menu_language", "🌐 Language"), callback_data="action_language", style="primary"),
+            InlineKeyboardButton(text=labels.get("menu_help", "ℹ️ Help"), callback_data="action_help", style="primary"),
         ])
     else:
         rows = [
-            [InlineKeyboardButton(text=labels.get("menu_ref", "👥 Рефералы"), callback_data="action_ref"),
-             InlineKeyboardButton(text=labels.get("menu_profile", "👤 Профиль"), callback_data="action_profile")],
-            [InlineKeyboardButton(text=labels.get("access_button", "🔓 Получить доступ"), callback_data="action_access")],
-            [InlineKeyboardButton(text=labels.get("menu_reviews", "⭐ Отзывы"), callback_data="action_reviews"),
-             InlineKeyboardButton(text=labels.get("menu_help", "ℹ️ Помощь"), callback_data="action_help")],
-            [InlineKeyboardButton(text=labels.get("menu_language", "🌐 Language"), callback_data="action_language")],
+            [InlineKeyboardButton(text=labels.get("menu_ref", "👥 Рефералы"), callback_data="action_ref", style="primary"),
+             InlineKeyboardButton(text=labels.get("menu_profile", "👤 Профиль"), callback_data="action_profile", style="primary")],
+            [InlineKeyboardButton(text=labels.get("access_button", "🔓 Получить доступ"), callback_data="action_access", style="primary")],
+            [InlineKeyboardButton(text=labels.get("menu_reviews", "⭐ Отзывы"), callback_data="action_reviews", style="primary"),
+             InlineKeyboardButton(text=labels.get("menu_help", "ℹ️ Помощь"), callback_data="action_help", style="primary")],
+            [InlineKeyboardButton(text=labels.get("menu_language", "🌐 Language"), callback_data="action_language", style="primary")],
         ]
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 def get_back_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu")]
+        [InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu", style="primary")]
     ])
 
 # =============================================================
@@ -472,9 +472,9 @@ async def cmd_start(message: Message):
 def get_nav_keyboard(user_id: int, index: int, total: int) -> InlineKeyboardMarkup:
     buttons = []
     if index > 0:
-        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_prev"), callback_data="nav_prev"))
+        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_prev"), callback_data="nav_prev"), style="primary")
     if index < total - 1:
-        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_next"), callback_data="nav_next"))
+        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_next"), callback_data="nav_next"), style="primary")
     return InlineKeyboardMarkup(inline_keyboard=[buttons])
 
 async def show_main_menu(message: Message, user_id: int = 0):
@@ -687,10 +687,10 @@ async def cb_access(callback: CallbackQuery):
     lang = user_languages.get(user_id, "ru")
     labels = TRANSLATIONS.get(lang, TRANSLATIONS["ru"])
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=labels.get("pay_stars", "⭐ 2000 Stars"), callback_data="pay_stars")],
-        [InlineKeyboardButton(text=labels.get("pay_crypto", "💰 $15 CryptoBot"), callback_data="pay_crypto")],
+        [InlineKeyboardButton(text=labels.get("pay_stars", "⭐ 2000 Stars"), callback_data="pay_stars", style="success")],
+        [InlineKeyboardButton(text=labels.get("pay_crypto", "💰 $15 CryptoBot"), callback_data="pay_crypto", style="success")],
         [InlineKeyboardButton(text="📨 Администратор", url="https://t.me/costgold"),
-         InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu")],
+         InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu", style="primary")],
     ])
     try:
         await callback.message.edit_text(t(user_id, "pay_title"), reply_markup=keyboard)
@@ -743,7 +743,7 @@ async def cb_pay_notify_admin(callback: CallbackQuery):
     user_id = callback.from_user.id
     username = callback.from_user.username or "—"
     mention = f"<a href='tg://user?id={user_id}'>{user_id}</a>"
-    await bot.send_message(ADMIN_ID, 
+    await bot.send_message(ADMIN_ID,
         f"💰 Пользователь {mention} (@{username}) сообщает, что оплатил!\n"
         f"Команда: /approve {user_id}",
         parse_mode="HTML"
@@ -851,15 +851,15 @@ async def cb_admin_users(callback: CallbackQuery):
         btn_approve = InlineKeyboardButton(text=t(user_id, "admin_btn_approve"), callback_data=f"admin_appr_{uid}")
         btn_reject = InlineKeyboardButton(text=t(user_id, "admin_btn_reject"), callback_data=f"admin_rej_{uid}")
         text = t(user_id, "admin_user_line", id=uid, status=status)
-        lines.append([InlineKeyboardButton(text=text.strip(), callback_data="noop")])
+        lines.append([InlineKeyboardButton(text=text.strip(), callback_data="noop")], style="primary")
         lines.append([btn_approve, btn_reject])
     if not lines:
-        lines.append([InlineKeyboardButton(text=t(user_id, "error_no_users"), callback_data="noop")])
+        lines.append([InlineKeyboardButton(text=t(user_id, "error_no_users"), callback_data="noop")], style="primary")
     lines.append([
-        InlineKeyboardButton(text=t(user_id, "admin_ask_approve"), callback_data="admin_ask_approve"),
-        InlineKeyboardButton(text=t(user_id, "admin_ask_reject"), callback_data="admin_ask_reject"),
+        InlineKeyboardButton(text=t(user_id, "admin_ask_approve"), callback_data="admin_ask_approve", style="success"),
+        InlineKeyboardButton(text=t(user_id, "admin_ask_reject"), callback_data="admin_ask_reject", style="danger"),
     ])
-    lines.append([InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu")])
+    lines.append([InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu")], style="primary")
     keyboard = InlineKeyboardMarkup(inline_keyboard=lines)
     try:
         await callback.message.edit_text(stats + t(user_id, "admin_users_title", total=total), reply_markup=keyboard)
@@ -900,7 +900,7 @@ async def cb_admin_ask_approve(callback: CallbackQuery):
         return
     pending_admin_action[ADMIN_ID] = "approve"
     cancel_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=t(ADMIN_ID, "admin_cancel"), callback_data="admin_cancel_input")]
+        [InlineKeyboardButton(text=t(ADMIN_ID, "admin_cancel"), callback_data="admin_cancel_input", style="danger")]
     ])
     await callback.message.answer(t(ADMIN_ID, "admin_enter_id"), reply_markup=cancel_kb)
     await callback.answer()
@@ -912,7 +912,7 @@ async def cb_admin_ask_reject(callback: CallbackQuery):
         return
     pending_admin_action[ADMIN_ID] = "reject"
     cancel_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=t(ADMIN_ID, "admin_cancel"), callback_data="admin_cancel_input")]
+        [InlineKeyboardButton(text=t(ADMIN_ID, "admin_cancel"), callback_data="admin_cancel_input", style="danger")]
     ])
     await callback.message.answer(t(ADMIN_ID, "admin_enter_id"), reply_markup=cancel_kb)
     await callback.answer()
@@ -950,7 +950,7 @@ async def cb_profile(callback: CallbackQuery):
         text = t(user_id, "profile_title", user_id=user_id, status=status, link=link, count=count, balance=balance)
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="📤 Улашиш / Share", url=f"https://t.me/share/url?url={link}")],
-            [InlineKeyboardButton(text="🔙 Асосий меню", callback_data="action_main_menu")],
+            [InlineKeyboardButton(text="🔙 Асосий меню", callback_data="action_main_menu", style="primary")],
         ])
         await callback.message.answer(text, reply_markup=keyboard, parse_mode="HTML")
     except Exception as e:
@@ -971,7 +971,7 @@ async def cb_ref(callback: CallbackQuery):
     text = t(user_id, "ref_title", link=link, count=count, earnings=earnings)
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="📤 Поделиться", url=f"https://t.me/share/url?url={link}")],
-        [InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu")],
+        [InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu", style="primary")],
     ])
     try:
         await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
