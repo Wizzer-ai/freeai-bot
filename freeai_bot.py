@@ -415,7 +415,7 @@ def get_main_keyboard(user_id: int):
             [InlineKeyboardButton(text=labels.get("menu_dots", "📧 Generate email"), callback_data="action_dots", style="primary")],
         ]
         if user_id == ADMIN_ID:
-            rows.append([InlineKeyboardButton(text=labels.get("admin_btn_users", "👥 Users"), callback_data="action_admin_users")], style="primary")
+            rows.append([InlineKeyboardButton(text=labels.get("admin_btn_users", "👥 Users"), callback_data="action_admin_users", style="primary")])
         rows.append([
             InlineKeyboardButton(text=labels.get("menu_language", "🌐 Language"), callback_data="action_language", style="primary"),
             InlineKeyboardButton(text=labels.get("menu_help", "ℹ️ Help"), callback_data="action_help", style="primary"),
@@ -472,9 +472,9 @@ async def cmd_start(message: Message):
 def get_nav_keyboard(user_id: int, index: int, total: int) -> InlineKeyboardMarkup:
     buttons = []
     if index > 0:
-        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_prev"), callback_data="nav_prev"), style="primary")
+        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_prev"), callback_data="nav_prev", style="primary"))
     if index < total - 1:
-        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_next"), callback_data="nav_next"), style="primary")
+        buttons.append(InlineKeyboardButton(text=t(user_id, "btn_next"), callback_data="nav_next", style="primary"))
     return InlineKeyboardMarkup(inline_keyboard=[buttons])
 
 async def show_main_menu(message: Message, user_id: int = 0):
@@ -851,15 +851,15 @@ async def cb_admin_users(callback: CallbackQuery):
         btn_approve = InlineKeyboardButton(text=t(user_id, "admin_btn_approve"), callback_data=f"admin_appr_{uid}")
         btn_reject = InlineKeyboardButton(text=t(user_id, "admin_btn_reject"), callback_data=f"admin_rej_{uid}")
         text = t(user_id, "admin_user_line", id=uid, status=status)
-        lines.append([InlineKeyboardButton(text=text.strip(), callback_data="noop")], style="primary")
+        lines.append([InlineKeyboardButton(text=text.strip(), callback_data="noop", style="primary")])
         lines.append([btn_approve, btn_reject])
     if not lines:
-        lines.append([InlineKeyboardButton(text=t(user_id, "error_no_users"), callback_data="noop")], style="primary")
+        lines.append([InlineKeyboardButton(text=t(user_id, "error_no_users"), callback_data="noop", style="primary")])
     lines.append([
         InlineKeyboardButton(text=t(user_id, "admin_ask_approve"), callback_data="admin_ask_approve", style="success"),
         InlineKeyboardButton(text=t(user_id, "admin_ask_reject"), callback_data="admin_ask_reject", style="danger"),
     ])
-    lines.append([InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu")], style="primary")
+    lines.append([InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu", style="primary")])
     keyboard = InlineKeyboardMarkup(inline_keyboard=lines)
     try:
         await callback.message.edit_text(stats + t(user_id, "admin_users_title", total=total), reply_markup=keyboard)
