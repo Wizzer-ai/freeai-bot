@@ -35,7 +35,7 @@ LANGUAGES = {"ru": "Русский", "uz": "O'zbek", "en": "English"}
 
 TRANSLATIONS = {
     "ru": {
-        "welcome": "👋 Добро пожаловать в FreeAI Bot!\n\n🤖 Этот бот умеет:\n• Давать доступ к AI сервисам\n• Реферальная программа с заработком\n\n🔥 Нажми «ℹ️ Помощь» чтобы узнать как пользоваться ботом!",
+        "welcome": "<b>FREE Ai — твой безлимитный ключ к ИИ</b>\n\n🤖 <b>Что внутри:</b>\n  • ChatGPT, Claude, Gemini, DeepSeek — без ограничений\n  • Google Flow (Veo 3.1, Nano Banana) — видео и фото на ИИ\n  • Hailuo AI, Seedance — генерация видео\n  • Gamma — презентации за секунды\n\n🎁 Пробный период — попробуй все сервисы бесплатно\n🚀 После покупки — полный безлимит, никаких лимитов\n\n🔥 Подписка = доступ ко всем premium ИИ-сервисам мира в одном боте. Без VPN, без регистраций, без ограничений.",
         "help": "ℹ️ Как пользоваться ботом:\n\n1️⃣ 💰 Оплати доступ или приведи друга по реф-ссылке\n2️⃣ 📧 Отправь свой Gmail адрес (например, freeai@gmail.com)\n3️⃣ ⏳ Бот сгенерирует все комбинации с точками\n4️⃣ ◀️ ▶️ Листай список кнопками\n5️⃣ 📎 Файл со всеми вариантами придет автоматически\n\n🔑 Пароль от всех вариантов такой же, как у оригинала\n\n👥 Рефералы: делись ссылкой — получай 10% с каждой оплаты",
         "lang_changed": "✅ Язык: Русский",
         "menu_language": "🌐 Язык",
@@ -102,7 +102,7 @@ TRANSLATIONS = {
         "error_usage_reject": "Использование: /reject <user_id>",
     },
     "uz": {
-        "welcome": "👋 FreeAI Ботга хуш келибсиз!\n\n🤖 Бу бот қуйидаги вазифа бажаради:\n• АИ хизматларини чексиз ишлатиш\n• Реферал дастур орқали пул топиш\n\n🔥 «ℹ️ Ёрдам» тугмасини босинг — ботдан қандай фойдаланишни билиб олинг!",
+        "welcome": "<b>FREE Ai — чексиз ИИ калитинг</b>\n\n🤖 <b>Ичида нима бор:</b>\n  • ChatGPT, Claude, Gemini, DeepSeek — чексиз\n  • Google Flow (Veo 3.1, Nano Banana) — видео ва фото\n  • Hailuo AI, Seedance — видео яратиш\n  • Gamma — презентациялар\n\n🎁 Синов муддати — барча хизматларни бепул синаб кўринг\n🚀 Тўловдан сўнг — чексиз, ҳеч қандай лимитларсиз\n\n🔥 Обуна = битта ботдаги барча premium ИИ хизматларига кириш. VPN, рўйхатдан ўтиш ва чекловларсиз.",
         "help": "ℹ️ Ботдан қандай фойдаланиш:\n\n1️⃣ 💰 Тўлов қилинг ёки дўстингизни реферал ҳавола орқали таклиф қилинг\n2️⃣ 📧 Gmail манзилингизни юборинг (масалан, freeai@gmail.com)\n3️⃣ ⏳ Бот нуқта билан барча комбинацияларни яратади\n4️⃣ ◀️ ▶️ Рўйхатни тугмалар билан айлантиринг\n5️⃣ 📎 Барча вариантлар файли автоматик келади\n\n🔑 Парол барча вариантларда асл email билан бир хил\n\n👥 Рефераллар: ҳаволани улашинг — ҳар бир тўловдан 10% олинг",
         "lang_changed": "✅ Тил: Ўзбек",
         "menu_language": "🌐 Тил",
@@ -169,7 +169,7 @@ TRANSLATIONS = {
         "error_usage_reject": "Ишлатиш: /reject <user_id>",
     },
     "en": {
-        "welcome": "👋 Welcome to FreeAI Bot!\n\n🤖 This bot can:\n• Give access to AI services\n• Referral program with earnings\n\n🔥 Press «ℹ️ Help» to learn how to use the bot!",
+        "welcome": "<b>FREE Ai — your unlimited key to AI</b>\n\n🤖 <b>What's inside:</b>\n  • ChatGPT, Claude, Gemini, DeepSeek — unlimited\n  • Google Flow (Veo 3.1, Nano Banana) — AI video & photo\n  • Hailuo AI, Seedance — video generation\n  • Gamma — presentations in seconds\n\n🎁 Trial period — try all services for free\n🚀 After purchase — full unlimited access, no limits\n\n🔥 Subscription = access to all premium AI services in one bot. No VPN, no registration, no restrictions.",
         "help": "ℹ️ How to use the bot:\n\n1️⃣ 💰 Pay for access or refer a friend\n2️⃣ 📧 Send your Gmail address (e.g. freeai@gmail.com)\n3️⃣ ⏳ Bot generates all dot combinations\n4️⃣ ◀️ ▶️ Browse with Prev/Next buttons\n5️⃣ 📎 File with all variants arrives automatically\n\n🔑 Password is the same as the original for all variants\n\n👥 Referrals: share your link — earn 10% from each payment",
         "lang_changed": "✅ Language: English",
         "menu_language": "🌐 Language",
