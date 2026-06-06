@@ -266,6 +266,7 @@ try:
 except (ValueError, TypeError):
     ADMIN_ID = 0
 CRYPTOBOT_TOKEN = os.getenv("CRYPTOBOT_TOKEN", "")
+RENDER_URL = os.getenv("RENDER_URL", "")  # внешний URL для cron-job.org
 MAX_LOCAL_LENGTH = 16  # макс длина логина (2^15=32768 комб.)
 MAX_COMBINATIONS_WARNING = 50000
 
@@ -1057,6 +1058,7 @@ async def main():
     # Keepalive — не даёт Render усыпить сервис
     async def keepalive():
         port = os.environ.get("PORT", "5000")
+        ext_url = RENDER_URL or ""
         while True:
             try:
                 async with aiohttp.ClientSession() as sess:
@@ -1070,6 +1072,13 @@ async def main():
     logger.info("=" * 50)
     logger.info(" FreeAI Bot запущен!")
     logger.info("=" * 50)
+
+    # Напоминание про внешний cron-job
+    if RENDER_URL:
+        logger.info(f"🌐 Внешний пинг: {RENDER_URL}")
+    else:
+        logger.info("🌐 Настрой RENDER_URL для cron-job.org — иначе Render усыпит бота")
+
     await dp.start_polling(bot)
 
 if __name__ == "__main__":

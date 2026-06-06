@@ -15,3 +15,5 @@ services:
         sync: false
       - key: CRYPTOBOT_TOKEN
         sync: false
+      - key: RENDER_URL
+        sync: false
