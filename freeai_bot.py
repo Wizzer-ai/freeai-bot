@@ -361,7 +361,10 @@ logger = logging.getLogger("FreeAI-Bot")
 # =============================================================
 # ИНИЦИАЛИЗАЦИЯ
 # =============================================================
-bot = Bot(token=TOKEN)
+try:
+    bot = Bot(token=TOKEN)
+except Exception:
+    bot = None
 dp = Dispatcher()
 router = Router()
 
@@ -1022,9 +1025,18 @@ async def cb_nav_next(callback: CallbackQuery):
 # =============================================================
 
 async def main():
-    if not TOKEN:
+    global bot
+
+    if not TOKEN or bot is None:
         print("❌ Не задан TELEGRAM_TOKEN или DOTS_BOT_TOKEN в .env")
-        sys.exit(1)
+        return
+
+    if bot is None:
+        try:
+            bot = Bot(token=TOKEN)
+        except Exception as e:
+            print(f"❌ Ошибка создания бота: {e}")
+            return
 
     dp.include_router(router)
 
@@ -1047,4 +1059,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nБот остановлен")
     finally:
-        asyncio.run(bot.session.close())
+        if bot:
+            asyncio.run(bot.session.close())

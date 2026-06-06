@@ -10,10 +10,20 @@ import threading
 import traceback
 from flask import Flask
 
-from freeai_bot import bot, dp, router, main as bot_main, TOKEN, logger
+# Импорт с защитой — если freeai_bot упадёт, Flask всё равно стартует
+bot_main = None
+try:
+    from freeai_bot import bot, dp, router, main as bot_main, TOKEN, logger
+except Exception as e:
+    import logging
+    logger = logging.getLogger("App")
+    logger.error(f"Import error: {e}\n{traceback.format_exc()}")
+    bot = None
+    dp = None
+    TOKEN = os.getenv("TELEGRAM_TOKEN", "")
 
 # ---------- Буфер логов (последние 200 строк) ----------
-log_buffer = []
+log_buffer = [traceback.format_exc() + "\n"] if "traceback" in dir() else []
 import io
 
 def log_write(s):
@@ -44,13 +54,16 @@ def run_http():
 if __name__ == "__main__":
     threading.Thread(target=run_http, daemon=True).start()
 
-    try:
-        asyncio.run(bot_main())
-    except Exception as e:
-        tb = traceback.format_exc()
-        msg = f"BOT CRASHED: {e}\n{tb}"
-        log_write(msg)
-        print(msg, flush=True)
-        import time
-        while True:
-            time.sleep(10)
+    if bot_main:
+        try:
+            asyncio.run(bot_main())
+        except Exception as e:
+            tb = traceback.format_exc()
+            msg = f"BOT CRASHED: {e}\n{tb}"
+            log_write(msg)
+            print(msg, flush=True)
+
+    # Держим процесс живым (Flask в daemon-треде)
+    import time
+    while True:
+        time.sleep(30)
