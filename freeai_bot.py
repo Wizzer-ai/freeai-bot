@@ -44,7 +44,7 @@ TRANSLATIONS = {
         "menu_how": "ℹ️ Как работает",
         "menu_services": "🔗 Сервисы",
         "how_text": "📘 Как работает бот:\n\n1️⃣ Gmail игнорирует точки в имени.\n   <code>n.ame@gmail.com</code> = <code>name@gmail.com</code>\n\n2️⃣ Можно вставлять точки между буквами.\n\n3️⃣ Можно добавлять +текст после имени.\n   <code>name+shop@gmail.com</code>\n\n🎯 Для чего это нужно?\n• Сортировка писем\n• Отслеживание источников регистрации\n• Тестирование форм\n• Создание фильтров в Gmail\n\n⚠ Все письма приходят в один ящик.",
-        "services_text": "🔗 Полезные сервисы\n\n💬 ИИ чаты:\n• Gemini — gemini.google.com\n• ChatGPT — chatgpt.com\n• Claude — claude.ai\n• DeepSeek — chat.deepseek.com\n\n🎨 ИИ для фото и видео:\n• Google Flow (Nano Banana, Veo 3.1) — labs.google/fx/ru/tools/flow\n   🎬 Видео до 8 сек на Veo 3.1\n• Hailuo AI — hailuoai.video\n• Seedance — seedance2.ai\n\n📊 ИИ для презентаций:\n• Gamma — gamma.app\n\n📎 Отправь мне email и получи комбинации с точками!",
+        "services_text": "<b>🔗 Полезные сервисы</b>\n\n<i>💬 ИИ чаты:</i>\n  • <a href='https://gemini.google.com'>Gemini</a>\n  • <a href='https://chatgpt.com'>ChatGPT</a>\n  • <a href='https://claude.ai'>Claude</a>\n  • <a href='https://chat.deepseek.com'>DeepSeek</a>\n\n<i>🎨 ИИ для фото и видео:</i>\n  • <a href='https://labs.google/fx/ru/tools/flow'>Google Flow</a> (Nano Banana, Veo 3.1)\n  • <a href='https://hailuoai.video'>Hailuo AI</a>\n  • <a href='https://seedance2.ai'>Seedance</a>\n\n<i>📊 ИИ для презентаций:</i>\n  • <a href='https://gamma.app'>Gamma</a>\n\n──────────────\n📎 Отправь мне email и получи комбинации с точками!",
         "get_email_text": "📧 Отправь мне Gmail адрес (например, <code>freeai@gmail.com</code>), и я сгенерирую ВСЕ возможные варианты расстановки точек!\n\nВсе они доставят письмо в один почтовый ящик ✅",
         "dots_title": "📧 Генератор точек для Gmail\n\nОтправь мне email — я сгенерирую ВСЕ возможные комбинации с точками!\n\nПример: <code>freeai@gmail.com</code>",
         "dots_wait": "⏳ Генерирую комбинации...",
@@ -111,7 +111,7 @@ TRANSLATIONS = {
         "menu_how": "ℹ️ Қандай ишлайди",
         "menu_services": "🔗 Хизматлар",
         "how_text": "📘 Бот қандай ишлайди:\n\n1️⃣ Gmail нуқталарни эътиборсиз қолдиради.\n   <code>n.ame@gmail.com</code> = <code>name@gmail.com</code>\n\n2️⃣ Нуқталарни ҳарфлар орасига қўйиш мумкин.\n\n3️⃣ Номдан кейин +матн қўшиш мумкин.\n   <code>name+shop@gmail.com</code>\n\n🎯 Нима учун керак?\n• Хатларни саралаш\n• Рўйхатдан ўтиш манбаларини кузатиш\n• Формаларни синаш\n• Gmail фильтрларини яратиш\n\n⚠ Барча хатлар бир қутига келади.",
-        "services_text": "🔗 Фойдали хизматлар\n\n💬 AI чатлар:\n• Gemini — gemini.google.com\n• ChatGPT — chatgpt.com\n• Claude — claude.ai\n• DeepSeek — chat.deepseek.com\n\n🎨 AI фото ва видео учун:\n• Google Flow (Nano Banana, Veo 3.1) — labs.google/fx/ru/tools/flow\n   🎬 Veo 3.1 да 8 секундгача видео\n• Hailuo AI — hailuoai.video\n• Seedance — seedance2.ai\n\n📊 AI презентациялар учун:\n• Gamma — gamma.app\n\n📎 Менга email юборинг ва нуқта комбинацияларини олинг!",
+        "services_text": "<b>🔗 Фойдали хизматлар</b>\n\n<i>💬 AI чатлар:</i>\n  • <a href='https://gemini.google.com'>Gemini</a>\n  • <a href='https://chatgpt.com'>ChatGPT</a>\n  • <a href='https://claude.ai'>Claude</a>\n  • <a href='https://chat.deepseek.com'>DeepSeek</a>\n\n<i>🎨 AI фото ва видео учун:</i>\n  • <a href='https://labs.google/fx/ru/tools/flow'>Google Flow</a> (Nano Banana, Veo 3.1)\n  • <a href='https://hailuoai.video'>Hailuo AI</a>\n  • <a href='https://seedance2.ai'>Seedance</a>\n\n<i>📊 AI презентациялар учун:</i>\n  • <a href='https://gamma.app'>Gamma</a>\n\n──────────────\n📎 Менга email юборинг ва нуқта комбинацияларини олинг!",
         "get_email_text": "📧 Менга Gmail манзилини юборинг (масалан, <code>freeai@gmail.com</code>), мен эса нуқталарни жойлаштиришнинг БАРЧА вариантларини яратаман!\n\nҲаммаси бир қутига етказилади ✅",
         "dots_title": "📧 Gmail нуқта генератори\n\nEmail юборинг — нуқталар билан БАРЧА комбинацияларни яратаман!\n\nМисол: <code>freeai@gmail.com</code>",
         "dots_wait": "⏳ Комбинацияларни яратмоқда...",
@@ -178,7 +178,7 @@ TRANSLATIONS = {
         "menu_how": "ℹ️ How it works",
         "menu_services": "🔗 Services",
         "how_text": "📘 How the bot works:\n\n1️⃣ Gmail ignores dots in the name.\n   <code>n.ame@gmail.com</code> = <code>name@gmail.com</code>\n\n2️⃣ You can insert dots between letters.\n\n3️⃣ You can add +text after the name.\n   <code>name+shop@gmail.com</code>\n\n🎯 Why is this useful?\n• Email sorting\n• Tracking registration sources\n• Testing forms\n• Creating Gmail filters\n\n⚠ All emails go to the same inbox.",
-        "services_text": "🔗 Useful Services\n\n💬 AI chats:\n• Gemini — gemini.google.com\n• ChatGPT — chatgpt.com\n• Claude — claude.ai\n• DeepSeek — chat.deepseek.com\n\n🎨 AI for photo & video:\n• Google Flow (Nano Banana, Veo 3.1) — labs.google/fx/ru/tools/flow\n   🎬 Video up to 8 sec on Veo 3.1\n• Hailuo AI — hailuoai.video\n• Seedance — seedance2.ai\n\n📊 AI for presentations:\n• Gamma — gamma.app\n\n📎 Send me an email and get dot combinations!",
+        "services_text": "<b>🔗 Useful Services</b>\n\n<i>💬 AI chats:</i>\n  • <a href='https://gemini.google.com'>Gemini</a>\n  • <a href='https://chatgpt.com'>ChatGPT</a>\n  • <a href='https://claude.ai'>Claude</a>\n  • <a href='https://chat.deepseek.com'>DeepSeek</a>\n\n<i>🎨 AI for photo & video:</i>\n  • <a href='https://labs.google/fx/ru/tools/flow'>Google Flow</a> (Nano Banana, Veo 3.1)\n  • <a href='https://hailuoai.video'>Hailuo AI</a>\n  • <a href='https://seedance2.ai'>Seedance</a>\n\n<i>📊 AI for presentations:</i>\n  • <a href='https://gamma.app'>Gamma</a>\n\n──────────────\n📎 Send me an email and get dot combinations!",
         "get_email_text": "📧 Send me a Gmail address (e.g. <code>freeai@gmail.com</code>), and I'll generate ALL possible dot placements!\n\nThey all deliver to the same inbox ✅",
         "dots_title": "📧 Gmail Dot Generator\n\nSend me an email — I'll generate ALL possible dot combinations!\n\nExample: <code>freeai@gmail.com</code>",
         "dots_wait": "⏳ Generating combinations...",
@@ -671,9 +671,9 @@ async def cb_how(callback: CallbackQuery):
 async def cb_services(callback: CallbackQuery):
     user_id = callback.from_user.id
     try:
-        await callback.message.edit_text(t(user_id, "services_text"), reply_markup=get_back_keyboard())
+        await callback.message.edit_text(t(user_id, "services_text"), reply_markup=get_back_keyboard(), parse_mode="HTML")
     except TelegramBadRequest:
-        await callback.message.answer(t(user_id, "services_text"), reply_markup=get_back_keyboard())
+        await callback.message.answer(t(user_id, "services_text"), reply_markup=get_back_keyboard(), parse_mode="HTML")
     await callback.answer()
 
 @router.callback_query(F.data == "action_dots")
