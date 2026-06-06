@@ -1053,6 +1053,20 @@ async def main():
     ])
 
     await bot.delete_webhook(drop_pending_updates=True)
+
+    # Keepalive — не даёт Render усыпить сервис
+    async def keepalive():
+        port = os.environ.get("PORT", "5000")
+        while True:
+            try:
+                async with aiohttp.ClientSession() as sess:
+                    await sess.get(f"http://localhost:{port}/health", timeout=aiohttp.ClientTimeout(total=5))
+            except Exception:
+                pass
+            await asyncio.sleep(240)
+
+    asyncio.create_task(keepalive())
+
     logger.info("=" * 50)
     logger.info(" FreeAI Bot запущен!")
     logger.info("=" * 50)
