@@ -19,12 +19,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
-if not BOT_TOKEN:
-    print("Ошибка: Укажи BOT_TOKEN в переменной окружения или в коде")
-    print("Пример: set BOT_TOKEN=123456:ABCdef...")
-    exit(1)
 
-bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
+try:
+    bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
+except Exception as e:
+    print(f"Ошибка: BOT_TOKEN не задан или невалиден ({e})")
+    bot = None
 dp = Dispatcher()
 
 
@@ -202,6 +202,9 @@ async def handle_email(message: Message):
 
 
 async def main():
+    if bot is None:
+        logger.error("Бот не создан — проверьте BOT_TOKEN")
+        return
     logger.info("Бот запущен...")
     await dp.start_polling(bot)
 

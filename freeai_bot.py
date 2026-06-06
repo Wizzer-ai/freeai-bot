@@ -260,9 +260,12 @@ def check_access(user_id: int) -> bool:
 # НАСТРОЙКИ
 # =============================================================
 TOKEN = os.getenv("DOTS_BOT_TOKEN") or os.getenv("TELEGRAM_TOKEN", "")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+try:
+    ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+except (ValueError, TypeError):
+    ADMIN_ID = 0
 CRYPTOBOT_TOKEN = os.getenv("CRYPTOBOT_TOKEN", "")
-MAX_LOCAL_LENGTH = 30
+MAX_LOCAL_LENGTH = 16  # макс длина логина (2^15=32768 комб.)
 MAX_COMBINATIONS_WARNING = 50000
 
 # =============================================================
@@ -286,17 +289,18 @@ def load_data():
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
             stats_data["dots_count"] = data.get("dots_count", 0)
-            stats_data["total_users"] = set(data.get("total_users", []))
+            users_raw = data.get("total_users", [])
+            stats_data["total_users"] = set(users_raw) if isinstance(users_raw, list) else set()
             stats_data["last_date"] = data.get("last_date", "")
             user_statuses_raw = data.get("user_statuses", {})
-            user_statuses = {int(k): v for k, v in user_statuses_raw.items()}
+            user_statuses = {int(k): v for k, v in user_statuses_raw.items()} if isinstance(user_statuses_raw, dict) else {}
             referrer_raw = data.get("referrer", {})
-            referrer = {int(k): v for k, v in referrer_raw.items()}
+            referrer = {int(k): v for k, v in referrer_raw.items()} if isinstance(referrer_raw, dict) else {}
             earnings_raw = data.get("referral_earnings", {})
-            referral_earnings = {int(k): v for k, v in earnings_raw.items()}
+            referral_earnings = {int(k): v for k, v in earnings_raw.items()} if isinstance(earnings_raw, dict) else {}
             languages_raw = data.get("user_languages", {})
-            user_languages = {int(k): v for k, v in languages_raw.items()}
-    except (FileNotFoundError, json.JSONDecodeError):
+            user_languages = {int(k): v for k, v in languages_raw.items()} if isinstance(languages_raw, dict) else {}
+    except (FileNotFoundError, json.JSONDecodeError, TypeError, ValueError):
         pass
 
 def save_data():
@@ -324,7 +328,7 @@ WELCOME_PHOTO_PATH = os.path.join(os.path.dirname(__file__), "welcome_photo.jpg"
 # CRYPTO BOT INVOICE
 # =============================================================
 
-async def create_crypto_invoice() -> str | None:
+async def create_crypto_invoice() -> Optional[str]:
     if not CRYPTOBOT_TOKEN:
         return None
     url = "https://pay.crypt.bot/api/createInvoice"
