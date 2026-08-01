@@ -32,7 +32,7 @@ from aiogram.exceptions import TelegramBadRequest
 # =============================================================
 # ЯЗЫКИ
 # =============================================================
-LANGUAGES = {"ru": "Русский", "uz": "O'zbek", "en": "English"}
+LANGUAGES = {"ru": "Русский", "en": "English"}
 
 TRANSLATIONS = {
     "ru": {
@@ -101,73 +101,6 @@ TRANSLATIONS = {
         "error_no_users": "Нет пользователей",
         "error_usage_approve": "Использование: /approve <user_id>",
         "error_usage_reject": "Использование: /reject <user_id>",
-    },
-    "uz": {
-        "welcome": "<b>FREE Ai — чексиз ИИ калитинг</b>\n\n🤖 <b>Ичида нима бор:</b>\n  • ChatGPT, Claude, Gemini, DeepSeek — чексиз\n  • Google Flow (Veo 3.1, Nano Banana) — видео ва фото\n  • Hailuo AI, Seedance — видео яратиш\n  • Gamma — презентациялар\n\n🎁 Синов муддати — барча хизматларни бепул синаб кўринг\n🚀 Тўловдан сўнг — чексиз, ҳеч қандай лимитларсиз\n\n🔥 Обуна = битта ботдаги барча premium ИИ хизматларига кириш. VPN, рўйхатдан ўтиш ва чекловларсиз.",
-        "help": "ℹ️ Ботдан қандай фойдаланиш:\n\n1️⃣ 💰 Тўлов қилинг ёки дўстингизни реферал ҳавола орқали таклиф қилинг\n2️⃣ 📧 Gmail манзилингизни юборинг (масалан, freeai@gmail.com)\n3️⃣ ⏳ Бот нуқта билан барча комбинацияларни яратади\n4️⃣ ◀️ ▶️ Рўйхатни тугмалар билан айлантиринг\n5️⃣ 📎 Барча вариантлар файли автоматик келади\n\n🔑 Парол барча вариантларда асл email билан бир хил\n\n👥 Рефераллар: ҳаволани улашинг — ҳар бир тўловдан 10% олинг",
-        "lang_changed": "✅ Тил: Ўзбек",
-        "menu_language": "🌐 Тил",
-        "menu_help": "ℹ️ Ёрдам",
-        "menu_dots": "📧 Почта яратиш",
-        "menu_how": "ℹ️ Қандай ишлайди",
-        "menu_services": "🔗 Хизматлар",
-        "how_text": "📘 Бот қандай ишлайди:\n\n1️⃣ Gmail нуқталарни эътиборсиз қолдиради.\n   <code>n.ame@gmail.com</code> = <code>name@gmail.com</code>\n\n2️⃣ Нуқталарни ҳарфлар орасига қўйиш мумкин.\n\n3️⃣ Номдан кейин +матн қўшиш мумкин.\n   <code>name+shop@gmail.com</code>\n\n🎯 Нима учун керак?\n• Хатларни саралаш\n• Рўйхатдан ўтиш манбаларини кузатиш\n• Формаларни синаш\n• Gmail фильтрларини яратиш\n\n⚠ Барча хатлар бир қутига келади.",
-        "services_text": "<b>🔗 Фойдали хизматлар</b>\n\n<i>💬 AI чатлар:</i>\n  • <a href='https://gemini.google.com'>Gemini</a>\n  • <a href='https://chatgpt.com'>ChatGPT</a>\n  • <a href='https://claude.ai'>Claude</a>\n  • <a href='https://chat.deepseek.com'>DeepSeek</a>\n\n<i>🎨 AI фото ва видео учун:</i>\n  • <a href='https://labs.google/fx/ru/tools/flow'>Google Flow</a> (Nano Banana, Veo 3.1)\n  • <a href='https://hailuoai.video'>Hailuo AI</a>\n  • <a href='https://seedance2.ai'>Seedance</a>\n\n<i>📊 AI презентациялар учун:</i>\n  • <a href='https://gamma.app'>Gamma</a>\n\n──────────────\n📎 Менга email юборинг ва нуқта комбинацияларини олинг!",
-        "get_email_text": "📧 Менга Gmail манзилини юборинг (масалан, <code>freeai@gmail.com</code>), мен эса нуқталарни жойлаштиришнинг БАРЧА вариантларини яратаман!\n\nҲаммаси бир қутига етказилади ✅",
-        "dots_title": "📧 Gmail нуқта генератори\n\nEmail юборинг — нуқталар билан БАРЧА комбинацияларни яратаман!\n\nМисол: <code>freeai@gmail.com</code>",
-        "dots_wait": "⏳ Комбинацияларни яратмоқда...",
-        "dots_result": "✅ Тайёр! {total} та комбинация",
-        "dots_item": "{n} дан {total}\n\n<code>{email}</code>\n\n🔑 Парол асл email билан бир хил",
-        "dots_empty": "❌ Email киритинг.\n\nМисол: <code>freeai@gmail.com</code>",
-        "dots_invalid": "❌ Нотўғри формат. Керак: <code>local@domain.com</code>",
-        "dots_long": "❌ Жуда узун ({n} та белги). {total} та комбинация.",
-        "dots_info": "ℹ️ Gmail нуқталарни эътиборсиз қолдиради. Барча вариантлар бир хил қутига етади!",
-        "dots_total": "📊 {email} учун: {total} комбинация",
-        "dots_file": "📎 {email} учун барча {total} комбинация",
-        "dots_warn": "⚠️ {total} та комбинация — кўп. Кутинг.",
-        "btn_prev": "◀️ Олд.",
-        "btn_next": "Кей. ▶️",
-        "access_denied": "❌ Кириш олинмаган\n\nМенюдан «🔓 Ботни ишлатиш» тугмасини босинг",
-        "access_button": "🔓 Ботни ишлатиш",
-        "pay_title": "💎 Тўлов усулини танланг:",
-        "pay_stars": "⭐ 2000 Stars",
-        "pay_crypto": "💰 $15 (CryptoBot)",
-        "pay_crypto_creating": "⏳ Ҳисоб яратилмоқда...",
-        "pay_crypto_ready": "💰 $15 USDT ли ҳисоб:\n{url}\n\nТўловдан сўнг «✅ Мен тўладим» тугмасини босинг — админ тасдиқлайди",
-        "pay_crypto_direct": "💰 $15 USDT ни @mylinkbad га тўланг, у киришни очади\n\n⭐ Stars орқали тўлаш ҳам мумкин",
-        "pay_i_paid": "✅ Мен тўладим",
-        "pay_notify_done": "✅ Хабар админга юборилди! Тасдиқланишини кутинг.",
-        "pay_success": "✅ Тўлов қабул қилинди! Кириш очиқ.",
-        "pay_stars_label": "Ботга кириш",
-        "pay_stars_title": "FreeAI Bot — кириш",
-        "pay_stars_desc": "Gmail нуқта комбинациялари генераторига кириш",
-        "pay_stars_link": "💎 Ҳавола орқали тўланг:\n{url}",
-        "menu_reviews": "⭐ Фикрлар",
-        "reviews_text": "⭐ Бот ҳақида фикрлар\n\nТез орада фойдаланувчи фикрлари пайдо бўлади!",
-        "menu_ref": "👥 Рефераллар",
-        "menu_profile": "👤 Профил",
-        "profile_title": "👤 Профил\n🆔 ID: {user_id}\n📌 Ҳолат: {status}\n\n💰 Баланс: ${balance:.2f}\n👥 Пулли рефераллар: {count}\n\n🔥 Ҳар бир тўловдан 10% олинг!\n\nСизнинг ҳаволангиз:\n<code>{link}</code>",
-        "ref_title": "👥 Реферал дастури\n\nСизнинг ҳаволангиз:\n<code>{link}</code>\n\nПулли таклиф: {count}\n💰 Топилган: ${earnings:.2f}\n\n🔥 Дўстларга ҳаволани юборинг — ҳар бир тўловдан 10% олинг!",
-        "service_welcome": "🚀 FreeAI Ботга хуш келибсиз!\n\nБу бот энг яхши АИ хизматларидан чексиз фойдаланиш имконини беради:\n\n🧠 <b>Gemini Omni</b> — Google'нинг кучли мультимодал модели\n🎨 <b>Nano Banana</b> — расм яратиш ва таҳрирлаш\n🎬 <b>Veo 3.1</b> — 8 секундгача видео яратиш\n💬 <b>ChatGPT / Claude / DeepSeek</b> — етакчи АИ чатлар\n📊 <b>Gamma</b> — презентациялар учун АИ\n\n🔑 Тўлов ёки админ тасдиқлашидан сўнг — Gmail комбинациялари ва барча хизматларга тўлиқ кириш!",
-        "admin_users_title": "👥 Фойдаланувчилар ({total}):\n",
-        "admin_user_line": "{id} — {status}\n",
-        "admin_approved": "✅ Фойдаланувчи {id} тасдиқланди",
-        "admin_rejected": "❌ Фойдаланувчи {id} рад этилди",
-        "admin_no_access": "❌ Кириш йўқ",
-        "admin_btn_users": "👥 Фойдаланувчилар",
-        "admin_btn_approve": "✅ Тасдиқлаш",
-        "admin_btn_reject": "❌ Рад этиш",
-        "admin_user_approved": "✅ Админ FreeAI Ботга киришингизни тасдиқлади!",
-        "admin_access_granted": "✅ Кириш очилди! FreeAI Ботдан фойдаланиш мумкин.\n\n/start ни босинг",
-        "admin_ask_approve": "✅ ID орқали тасдиқлаш",
-        "admin_ask_reject": "❌ ID орқали рад этиш",
-        "admin_enter_id": "✏️ Фойдаланувчи ID сини юборинг (фақат рақамлар)\n\nЁки «🔙 Бекор қилиш»ни босинг",
-        "admin_cancel": "🔙 Бекор қилиш",
-        "error_generic": "❌ Хатолик. Кейинроқ уриниб кўринг.",
-        "error_invalid_id": "Нотўғри ID",
-        "error_no_users": "Фойдаланувчилар йўқ",
-        "error_usage_approve": "Ишлатиш: /approve <user_id>",
-        "error_usage_reject": "Ишлатиш: /reject <user_id>",
     },
     "en": {
         "welcome": "<b>FREE Ai — your unlimited key to AI</b>\n\n🤖 <b>What's inside:</b>\n  • ChatGPT, Claude, Gemini, DeepSeek — unlimited\n  • Google Flow (Veo 3.1, Nano Banana) — AI video & photo\n  • Hailuo AI, Seedance — video generation\n  • Gamma — presentations in seconds\n\n🎁 Trial period — try all services for free\n🚀 After purchase — full unlimited access, no limits\n\n🔥 Subscription = access to all premium AI services in one bot. No VPN, no registration, no restrictions.",
@@ -407,9 +340,8 @@ def generate_dot_combinations(email: str) -> list[str]:
 
 def get_language_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🇷🇺 Русский", callback_data="lang_ru", style="primary")],
-        [InlineKeyboardButton(text="🇺🇿 O'zbek", callback_data="lang_uz", style="primary")],
-        [InlineKeyboardButton(text="🇬🇧 English", callback_data="lang_en", style="primary")],
+[InlineKeyboardButton(text="🇷🇺 Русский", callback_data="lang_ru", style="primary")],
+[InlineKeyboardButton(text="🇬🇧 English", callback_data="lang_en", style="primary")],
     ])
 
 def get_main_keyboard(user_id: int):
@@ -470,7 +402,7 @@ async def cmd_start(message: Message):
 
     if user_id not in user_languages:
         await message.answer(
-            "👋 Выбери язык / Tilni tanlang / Choose language:",
+            "👋 Выбери язык / Choose language:",
             reply_markup=get_language_keyboard()
         )
     else:
@@ -500,7 +432,7 @@ async def cmd_help(message: Message):
 
 @router.message(Command("lang"))
 async def cmd_lang(message: Message):
-    await message.answer("🌐 Выбери язык / Tilni tanlang / Choose language:", reply_markup=get_language_keyboard())
+    await message.answer("🌐 Выбери язык / Choose language:", reply_markup=get_language_keyboard())
 
 # =============================================================
 # АДМИН-КОМАНДЫ
@@ -798,7 +730,7 @@ async def cb_help(callback: CallbackQuery):
 
 @router.callback_query(F.data == "action_language")
 async def cb_language(callback: CallbackQuery):
-    await callback.message.edit_text("🌐 Выбери язык / Tilni tanlang / Choose language:", reply_markup=get_language_keyboard())
+    await callback.message.edit_text("🌐 Выбери язык / Choose language:", reply_markup=get_language_keyboard())
     await callback.answer()
 
 @router.callback_query(F.data.startswith("lang_"))
@@ -958,7 +890,7 @@ async def cb_profile(callback: CallbackQuery):
         s = user_statuses.get(user_id, None)
         lang = user_languages.get(user_id, "ru")
         labels = {"ru": {"paid": "✅ Оплачен", "approved": "✅ Одобрен", "pending": "⏳ Ожидание"},
-                  "uz": {"paid": "✅ Тўланган", "approved": "✅ Тасдиқланган", "pending": "⏳ Кутилмоқда"},
+                  
                   "en": {"paid": "✅ Paid", "approved": "✅ Approved", "pending": "⏳ Pending"}}
         status = labels.get(lang, labels["ru"]).get(s or "pending", labels["ru"]["pending"])
         text = t(user_id, "profile_title", user_id=user_id, status=status, link=link, count=count, balance=balance)
