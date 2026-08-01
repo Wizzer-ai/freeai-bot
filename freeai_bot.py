@@ -1,4 +1,4 @@
-"""
+﻿"""
 FreeAI Bot — генератор комбинаций точек для Gmail
 ==================================================
 """
@@ -67,7 +67,7 @@ TRANSLATIONS = {
         "pay_crypto": "💰 $15 (CryptoBot)",
         "pay_crypto_creating": "⏳ Создаю счёт...",
         "pay_crypto_ready": "💰 Счёт на $15 USDT:\n{url}\n\nПосле оплаты нажмите «✅ Я оплатил» — админ подтвердит доступ",
-        "pay_crypto_direct": "💰 Оплатите $15 USDT на @costgold — он откроет доступ\n\nИли используйте оплату ⭐ Stars",
+        "pay_crypto_direct": "💰 Оплатите $15 USDT на @mylinkbad — он откроет доступ\n\nИли используйте оплату ⭐ Stars",
         "pay_i_paid": "✅ Я оплатил",
         "pay_notify_done": "✅ Уведомление отправлено администратору! Ожидайте подтверждения.",
         "pay_success": "✅ Оплата получена! Доступ открыт.",
@@ -134,7 +134,7 @@ TRANSLATIONS = {
         "pay_crypto": "💰 $15 (CryptoBot)",
         "pay_crypto_creating": "⏳ Ҳисоб яратилмоқда...",
         "pay_crypto_ready": "💰 $15 USDT ли ҳисоб:\n{url}\n\nТўловдан сўнг «✅ Мен тўладим» тугмасини босинг — админ тасдиқлайди",
-        "pay_crypto_direct": "💰 $15 USDT ни @costgold га тўланг, у киришни очади\n\n⭐ Stars орқали тўлаш ҳам мумкин",
+        "pay_crypto_direct": "💰 $15 USDT ни @mylinkbad га тўланг, у киришни очади\n\n⭐ Stars орқали тўлаш ҳам мумкин",
         "pay_i_paid": "✅ Мен тўладим",
         "pay_notify_done": "✅ Хабар админга юборилди! Тасдиқланишини кутинг.",
         "pay_success": "✅ Тўлов қабул қилинди! Кириш очиқ.",
@@ -201,7 +201,7 @@ TRANSLATIONS = {
         "pay_crypto": "💰 $15 (CryptoBot)",
         "pay_crypto_creating": "⏳ Creating invoice...",
         "pay_crypto_ready": "💰 $15 USDT invoice:\n{url}\n\nAfter payment click «✅ I paid» — admin will confirm",
-        "pay_crypto_direct": "💰 Pay $15 USDT to @costgold and he will grant access\n\nOr use ⭐ Stars above",
+        "pay_crypto_direct": "💰 Pay $15 USDT to @mylinkbad and he will grant access\n\nOr use ⭐ Stars above",
         "pay_i_paid": "✅ I paid",
         "pay_notify_done": "✅ Notification sent to admin! Wait for confirmation.",
         "pay_success": "✅ Payment received! Access granted.",
@@ -253,7 +253,7 @@ def t(uid: int, key: str, **kwargs) -> str:
 STAR_PRICE = 2000
 
 def check_access(user_id: int) -> bool:
-    if user_id == ADMIN_ID:
+    if user_id in ADMIN_IDS:
         return True
     return user_statuses.get(user_id) in ("approved", "paid")
 
@@ -262,9 +262,10 @@ def check_access(user_id: int) -> bool:
 # =============================================================
 TOKEN = os.getenv("DOTS_BOT_TOKEN") or os.getenv("TELEGRAM_TOKEN", "")
 try:
-    ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
+    ADMIN_IDS = {int(x.strip()) for x in os.getenv("ADMIN_ID", "0").split(",") if x.strip()}
 except (ValueError, TypeError):
-    ADMIN_ID = 0
+    ADMIN_IDS = {0}
+ADMIN_ID = next(iter(ADMIN_IDS), 0)  # основной админ (для уведомлений)
 CRYPTOBOT_TOKEN = os.getenv("CRYPTOBOT_TOKEN", "")
 RENDER_URL = os.getenv("RENDER_URL", "")  # внешний URL для cron-job.org
 MAX_LOCAL_LENGTH = 16  # макс длина логина (2^15=32768 комб.)
@@ -423,7 +424,7 @@ def get_main_keyboard(user_id: int):
              InlineKeyboardButton(text=labels.get("menu_profile", "👤 Профиль"), callback_data="action_profile", style="primary")],
             [InlineKeyboardButton(text=labels.get("menu_dots", "📧 Generate email"), callback_data="action_dots", style="primary")],
         ]
-        if user_id == ADMIN_ID:
+        if user_id in ADMIN_IDS:
             rows.append([InlineKeyboardButton(text=labels.get("admin_btn_users", "👥 Users"), callback_data="action_admin_users", style="primary")])
         rows.append([
             InlineKeyboardButton(text=labels.get("menu_language", "🌐 Language"), callback_data="action_language", style="primary"),
@@ -507,7 +508,7 @@ async def cmd_lang(message: Message):
 
 @router.message(Command("users"))
 async def cmd_users(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
     lines = []
     for uid, status in user_statuses.items():
@@ -519,7 +520,7 @@ async def cmd_users(message: Message):
 
 @router.message(Command("approve"))
 async def cmd_approve(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
     parts = (message.text or "").split()
     if len(parts) < 2:
@@ -540,7 +541,7 @@ async def cmd_approve(message: Message):
 
 @router.message(Command("reject"))
 async def cmd_reject(message: Message):
-    if message.from_user.id != ADMIN_ID:
+    if message.from_user.id not in ADMIN_IDS:
         return
     parts = (message.text or "").split()
     if len(parts) < 2:
@@ -568,7 +569,7 @@ async def handle_text(message: Message):
         return
 
     # Admin ID input handling
-    if user_id == ADMIN_ID and user_id in pending_admin_action:
+    if user_id in ADMIN_IDS and user_id in pending_admin_action:
         action = pending_admin_action.pop(user_id)
         try:
             target = int(text)
@@ -698,7 +699,7 @@ async def cb_access(callback: CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=labels.get("pay_stars", "⭐ 2000 Stars"), callback_data="pay_stars", style="success")],
         [InlineKeyboardButton(text=labels.get("pay_crypto", "💰 $15 CryptoBot"), callback_data="pay_crypto", style="success")],
-        [InlineKeyboardButton(text="📨 Администратор", url="https://t.me/costgold"),
+        [InlineKeyboardButton(text="📨 Администратор", url="https://t.me/mylinkbad"),
          InlineKeyboardButton(text="🔙 Назад", callback_data="action_main_menu", style="primary")],
     ])
     try:
@@ -752,11 +753,15 @@ async def cb_pay_notify_admin(callback: CallbackQuery):
     user_id = callback.from_user.id
     username = callback.from_user.username or "—"
     mention = f"<a href='tg://user?id={user_id}'>{user_id}</a>"
-    await bot.send_message(ADMIN_ID,
-        f"💰 Пользователь {mention} (@{username}) сообщает, что оплатил!\n"
-        f"Команда: /approve {user_id}",
-        parse_mode="HTML"
-    )
+    for admin_id in ADMIN_IDS:
+        try:
+            await bot.send_message(admin_id,
+                f"💰 Пользователь {mention} (@{username}) сообщает, что оплатил!\n"
+                f"Команда: /approve {user_id}",
+                parse_mode="HTML"
+            )
+        except Exception:
+            pass
     await callback.answer(t(user_id, "pay_notify_done"), show_alert=True)
 
 @router.pre_checkout_query()
@@ -807,7 +812,7 @@ async def cb_lang_selected(callback: CallbackQuery):
     if user_id not in user_statuses:
         user_statuses[user_id] = "pending"
         save_data()
-    if user_id == ADMIN_ID:
+    if user_id in ADMIN_IDS:
         user_statuses[user_id] = "approved"
         save_data()
 
@@ -832,12 +837,12 @@ async def cb_lang_selected(callback: CallbackQuery):
 @router.callback_query(F.data == "action_admin_users")
 async def cb_admin_users(callback: CallbackQuery):
     user_id = callback.from_user.id
-    if user_id != ADMIN_ID:
+    if user_id not in ADMIN_IDS:
         await callback.answer()
         return
     total = paid = approved = pending = 0
     for uid, status in user_statuses.items():
-        if uid == ADMIN_ID:
+        if uid in ADMIN_IDS:
             continue
         total += 1
         if status == "paid":
@@ -855,7 +860,7 @@ async def cb_admin_users(callback: CallbackQuery):
     )
     lines = []
     for uid, status in user_statuses.items():
-        if uid == ADMIN_ID:
+        if uid in ADMIN_IDS:
             continue
         btn_approve = InlineKeyboardButton(text=t(user_id, "admin_btn_approve"), callback_data=f"admin_appr_{uid}")
         btn_reject = InlineKeyboardButton(text=t(user_id, "admin_btn_reject"), callback_data=f"admin_rej_{uid}")
@@ -878,7 +883,7 @@ async def cb_admin_users(callback: CallbackQuery):
 
 @router.callback_query(F.data.startswith("admin_appr_"))
 async def cb_admin_approve(callback: CallbackQuery):
-    if callback.from_user.id != ADMIN_ID:
+    if callback.from_user.id not in ADMIN_IDS:
         await callback.answer()
         return
     uid = int(callback.data.split("_")[-1])
@@ -893,7 +898,7 @@ async def cb_admin_approve(callback: CallbackQuery):
 
 @router.callback_query(F.data.startswith("admin_rej_"))
 async def cb_admin_reject(callback: CallbackQuery):
-    if callback.from_user.id != ADMIN_ID:
+    if callback.from_user.id not in ADMIN_IDS:
         await callback.answer()
         return
     uid = int(callback.data.split("_")[-1])
@@ -904,31 +909,31 @@ async def cb_admin_reject(callback: CallbackQuery):
 
 @router.callback_query(F.data == "admin_ask_approve")
 async def cb_admin_ask_approve(callback: CallbackQuery):
-    if callback.from_user.id != ADMIN_ID:
+    if callback.from_user.id not in ADMIN_IDS:
         await callback.answer()
         return
-    pending_admin_action[ADMIN_ID] = "approve"
+    pending_admin_action[callback.from_user.id] = "approve"
     cancel_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=t(ADMIN_ID, "admin_cancel"), callback_data="admin_cancel_input", style="danger")]
+        [InlineKeyboardButton(text=t(callback.from_user.id, "admin_cancel"), callback_data="admin_cancel_input", style="danger")]
     ])
-    await callback.message.answer(t(ADMIN_ID, "admin_enter_id"), reply_markup=cancel_kb)
+    await callback.message.answer(t(callback.from_user.id, "admin_enter_id"), reply_markup=cancel_kb)
     await callback.answer()
 
 @router.callback_query(F.data == "admin_ask_reject")
 async def cb_admin_ask_reject(callback: CallbackQuery):
-    if callback.from_user.id != ADMIN_ID:
+    if callback.from_user.id not in ADMIN_IDS:
         await callback.answer()
         return
-    pending_admin_action[ADMIN_ID] = "reject"
+    pending_admin_action[callback.from_user.id] = "reject"
     cancel_kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=t(ADMIN_ID, "admin_cancel"), callback_data="admin_cancel_input", style="danger")]
+        [InlineKeyboardButton(text=t(callback.from_user.id, "admin_cancel"), callback_data="admin_cancel_input", style="danger")]
     ])
-    await callback.message.answer(t(ADMIN_ID, "admin_enter_id"), reply_markup=cancel_kb)
+    await callback.message.answer(t(callback.from_user.id, "admin_enter_id"), reply_markup=cancel_kb)
     await callback.answer()
 
 @router.callback_query(F.data == "admin_cancel_input")
 async def cb_admin_cancel_input(callback: CallbackQuery):
-    pending_admin_action.pop(ADMIN_ID, None)
+    pending_admin_action.pop(callback.from_user.id, None)
     await callback.message.edit_text("❌ Отменено")
     await callback.answer()
     await cb_admin_users(callback)
